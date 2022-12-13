@@ -119,6 +119,9 @@ class AlienInvasion:
             self._create_fleet()
             self.ship.center_ship()
 
+            # Hide the mouse cursor.
+            pygame.mouse.set_visible(False)
+
     def _create_alien(self, alien_number, row_number):
         """Create an alien and place it in the row."""
         # Create an alien and place it in the row.
