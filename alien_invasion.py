@@ -176,11 +176,6 @@ class AlienInvasion:
         # Make the most recently drawn screen visible.
         pygame.display.flip()
 
-    def center_ship(self):
-        """Center the ship on the screen."""
-        self.rect.midbottom = self.screen_rect.midbottom
-        self.x = float(self.rect.x)
-
     def run_game(self):
         """Start the main loop for the game."""
         while True:
@@ -189,10 +184,6 @@ class AlienInvasion:
             self._update_bullets()
             self._update_aliens()
             self._update_screen()
-
-   
-
-    
 
 if __name__ == '__main__':
     # Make a game instance, and run the game.
