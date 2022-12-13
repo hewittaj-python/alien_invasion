@@ -1,11 +1,12 @@
-import sys
-
 import pygame
+import sys
 
 from alien import Alien
 from bullet import Bullet
+from game_stats import GameStats
 from settings import Settings
 from ship import Ship
+from time import sleep
 
 class AlienInvasion:
     """Overall class to manage game assets and behavior."""
@@ -24,6 +25,9 @@ class AlienInvasion:
         self.screen = pygame.display.set_mode(
             (self.settings.screen_width, self.settings.screen_height))
         pygame.display.set_caption("Alien Invasion")
+
+        # Create an instance to store game statistics.
+        self.stats = GameStats(self)
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
@@ -122,15 +126,22 @@ class AlienInvasion:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
 
-    def run_game(self):
-        """Start the main loop for the game."""
-        while True:
-            self._check_events()
-            self.ship.update()
-            self._update_bullets()
-            self._update_aliens()
-            self._update_screen()
+    def _ship_hit(self):
+        """Respond to the ship being hit by an alien."""
 
+        # Decrement ships_left.
+        self.stats.ships_left -= 1
+
+        # Get rid of any remaining alines and bullets.
+        self.aliens.empty()
+        self.bullets.empty()
+
+        # Create a new fleet and center the ship
+        self._create_fleet()
+        self.ship.center_ship()
+        
+        # Pause.
+        sleep(0.5)
     def _update_aliens(self):
         """
         Check if the fleet is at an edge, 
@@ -141,7 +152,7 @@ class AlienInvasion:
 
         # Look for alien-ship collisions.
         if pygame.sprite.spritecollideany(self.ship, self.aliens):
-            print("Ship hit!!!")
+            self._ship_hit()
 
     def _update_bullets(self):
         """Update position of bullets and get rid of old bullets."""
@@ -164,6 +175,24 @@ class AlienInvasion:
         self.aliens.draw(self.screen)
         # Make the most recently drawn screen visible.
         pygame.display.flip()
+
+    def center_ship(self):
+        """Center the ship on the screen."""
+        self.rect.midbottom = self.screen_rect.midbottom
+        self.x = float(self.rect.x)
+
+    def run_game(self):
+        """Start the main loop for the game."""
+        while True:
+            self._check_events()
+            self.ship.update()
+            self._update_bullets()
+            self._update_aliens()
+            self._update_screen()
+
+   
+
+    
 
 if __name__ == '__main__':
     # Make a game instance, and run the game.

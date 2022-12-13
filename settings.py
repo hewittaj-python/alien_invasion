@@ -22,4 +22,5 @@ class Settings:
         self.screen_width = 1200
         
         # Ship settings
+        self.ship_limit = 3
         self.ship_speed = 4.5
