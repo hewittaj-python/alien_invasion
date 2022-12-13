@@ -159,26 +159,6 @@ class AlienInvasion:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
 
-    def _ship_hit(self):
-        """Respond to the ship being hit by an alien."""
-        if self.stats.ships_left > 0:
-
-            # Decrement ships_left.
-            self.stats.ships_left -= 1
-
-            # Get rid of any remaining alines and bullets.
-            self.aliens.empty()
-            self.bullets.empty()
-
-            # Create a new fleet and center the ship
-            self._create_fleet()
-            self.ship.center_ship()
-            
-            # Pause.
-            sleep(0.5)
-        else:
-            self.stats.game_active = False
-
     def _update_aliens(self):
         """
         Check if the fleet is at an edge, 
@@ -218,6 +198,27 @@ class AlienInvasion:
             self.play_button.draw_button()
         # Make the most recently drawn screen visible.
         pygame.display.flip()
+
+    def _ship_hit(self):
+        """Respond to the ship being hit by an alien."""
+        if self.stats.ships_left > 0:
+
+            # Decrement ships_left.
+            self.stats.ships_left -= 1
+
+            # Get rid of any remaining alines and bullets.
+            self.aliens.empty()
+            self.bullets.empty()
+
+            # Create a new fleet and center the ship
+            self._create_fleet()
+            self.ship.center_ship()
+            
+            # Pause.
+            sleep(0.5)
+        else:
+            self.stats.game_active = False
+            pygame.mouse.set_visible(True)
 
     def run_game(self):
         """Start the main loop for the game."""
